@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التهنئة الذكية | انشر الفرح</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #e53e3e;
+            --dark: #1a202c;
+            --whatsapp: #25D366;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* نافذة العيدية */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); display: flex; align-items: center;
+            justify-content: center; z-index: 2000; backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: white; padding: 30px; border-radius: 25px;
+            max-width: 400px; width: 85%; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* التصميم الأساسي */
+        .main-wrapper {
+            background: white; padding: 20px; border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1); width: 100%;
+            max-width: 480px; text-align: center;
+        }
+
+        .joy-badge {
+            background: #fff5f5; color: var(--primary); padding: 8px 18px;
+            border-radius: 50px; font-size: 14px; font-weight: bold;
+            display: inline-flex; margin-bottom: 15px; border: 1px solid #fed7d7;
+        }
+
+        #capture-area {
+            position: relative; width: 100%; border-radius: 15px;
+            overflow: hidden; margin-bottom: 20px; background: #fff;
+            line-height: 0;
+        }
+
+        #template-img { width: 100%; height: auto; display: block; }
+
+        #display-name {
+            position: absolute; 
+            bottom: 16%; /* مكان الاسم أسفل القالب رقم 4 */
+            left: 50%;
+            transform: translateX(-50%); 
+            width: 90%;
+            font-family: 'Amiri', serif; 
+            font-size: clamp(24px, 5vw, 38px);
+            color: #5b90af; /* اللون السماوي المطلوب */
+            text-shadow: 2px 2px 8px rgba(171, 199, 169, 0.8); /* ظل أخضر خفيف */
+            text-align: center; 
+            pointer-events: none;
+        }
+
+        .action-btns { display: flex; flex-direction: column; gap: 10px; }
+
+        input {
+            padding: 16px; border: 2px solid #edf2f7; border-radius: 12px;
+            font-size: 18px; text-align: center; font-family: 'Cairo'; outline: none;
+        }
+
+        .btn {
+            padding: 16px; border: none; border-radius: 12px;
+            font-weight: bold; font-size: 17px; cursor: pointer;
+            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .btn-download { background: var(--dark); color: white; }
+        .btn-share { background: var(--whatsapp); color: white; display: none; }
+
+        .footer-text { font-size: 11px; color: #a0aec0; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="modal-overlay" id="welcomeModal">
+    <div class="modal-content">
+        <h2 style="margin:0;">🎁 عيدية خاصة!</h2>
+        <p style="font-size: 15px; color: #4a5568;">
+            أرسل تهنئة العيد لمن تحب، وإذا وصلتهم بطاقتك… لهم ولكم عيدية خاصة منّا 🎁
+        </p>
+        <button class="btn btn-download" style="width:100%" onclick="closeModal()">ابدأ الآن ✨</button>
+    </div>
+</div>
+
+<div class="main-wrapper">
+    <div class="joy-badge">
+        ❤️ تم نشر الفرح إلى <span id="joy-count">...</span> شخص
+    </div>
+
+    <div id="capture-area">
+        <img id="template-img" src="تهنئة عيد سعيد مبارك قصة Instagram ورد أنيق  (4).jpg" crossorigin="anonymous">
+        <div id="display-name">الاسم هنا</div>
+    </div>
+
+    <div class="action-btns">
+        <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." oninput="updateUI()" maxlength="30">
+        
+        <button id="downloadBtn" class="btn btn-download" onclick="handleDownload()">
+            ✅ صمم وحمل البطاقة
+        </button>
+
+        <button id="shareBtn" class="btn btn-share" onclick="handleShare()">
+            📲 مشاركة مباشرة للواتساب
+        </button>
+    </div>
+
+    <div class="footer-text">كل عام وأنتم بخير © 2026</div>
+</div>
+
+<script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4IYUF-IlQEtBANNRfo_Lu0qai8ZWqTRn0e6IzczRSQeKTJ2Hi68JuQYpjQWtqrjsT/exec';
+    let generatedBlob = null;
+
+    function closeModal() { document.getElementById('welcomeModal').style.display = 'none'; }
+
+    async function fetchCounter() {
+        try {
+            const response = await fetch(SCRIPT_URL + '?t=' + new Date().getTime());
+            const count = await response.text();
+            document.getElementById('joy-count').innerText = parseInt(count).toLocaleString();
+        } catch (e) { document.getElementById('joy-count').innerText = "1,291"; }
+    }
+    fetchCounter();
+
+    function updateUI() {
+        document.getElementById('display-name').innerText = document.getElementById('nameInput').value || "الاسم هنا";
+    }
+
+    async function handleDownload() {
+        const name = document.getElementById('nameInput').value;
+        if (!name) { alert("اكتب اسمك أولاً يا غالي"); return; }
+
+        const btn = document.getElementById('downloadBtn');
+        btn.innerText = "جاري الحفظ...";
+        btn.disabled = true;
+
+        try {
+            const canvas = await html2canvas(document.getElementById('capture-area'), { scale: 3, useCORS: true });
+            
+            canvas.toBlob(async (blob) => {
+                generatedBlob = blob;
+                const url = URL.createObjectURL(blob);
+                
+                const link = document.createElement('a');
+                link.download = `تهنئة_${name}.png`;
+                link.href = url;
+                link.click();
+
+                document.getElementById('shareBtn').style.display = 'flex';
+                btn.innerText = "✨ تم الحفظ بنجاح";
+                
+                fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors' });
+                let current = parseInt(document.getElementById('joy-count').innerText.replace(/,/g, ''));
+                document.getElementById('joy-count').innerText = (current + 1).toLocaleString();
+            });
+
+        } catch (err) { alert("حدث خطأ، حاول مرة أخرى"); btn.disabled = false; }
+    }
+
+    // ميزة المشاركة: ترسل الصورة + رابط المكان
+   async function handleShare() {
+        // التأكد من أن الصورة تم إنشاؤها أولاً
+        if (!generatedBlob) {
+            alert("يرجى الضغط على زر (صمم وحمل البطاقة) أولاً قبل المشاركة");
+            return;
+        }
+
+        const name = document.getElementById('nameInput').value || "صديقك";
+        
+        // تجهيز ملف الصورة
+        const file = new File([generatedBlob], `Eid_Greeting.png`, { type: 'image/png' });
+
+        // الروابط المطلوبة
+        const locationURL = "https://maps.google.com/your-location"; // ضع رابط موقعك الحقيقي هنا
+        const siteURL = window.location.href;
+
+        // نص الرسالة
+        const shareText = `عيد مبارك وكل عام وأنتم بخير ✨\n\n📍 موقع استلام العيدية:\n${locationURL}\n\n🎁 اصنع تهنئتك الخاصة من هنا:\n${siteURL}`;
+
+        // التحقق هل المتصفح يدعم مشاركة الملفات (تنسيق الجوالات)
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+                await navigator.share({
+                    files: [file],
+                    text: shareText,
+                });
+            } catch (err) {
+                console.log("تم إلغاء المشاركة أو حدث خطأ");
+            }
+        } else {
+            // حل المتصفحات التي لا تدعم إرسال الملفات (مثل الكمبيوتر)
+            const whatsappText = encodeURIComponent(shareText);
+            const waUrl = `https://api.whatsapp.com/send?text=${whatsappText}`;
+            
+            alert("متصفحك لا يدعم إرسال الصورة مباشرة. سيتم إرسال النص والروابط، يرجى إرفاق الصورة يدوياً من الاستوديو.");
+            window.open(waUrl, '_blank');
+        }
+    }
+</script>
+
+</body>
+</html>
