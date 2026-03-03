@@ -3,244 +3,298 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة التهنئة الذكية</title>
+<title>تهنئة العيد - مانديلين</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--primary:#c0392b;--gold:#f1c40f;--green:#25D366;--dark:#1a1a2e;--muted:#aaa;--radius:18px}
+:root{
+  --blue:#5b90af;--blue-dark:#3d6e8a;--blue-light:#a8c8dc;
+  --cream:#f8f5f0;--text:#4a4a4a;--muted:#999;--radius:20px;
+  --gold:#c9a96e;
+}
 
 body{
   font-family:'Cairo',sans-serif;
-  background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  background:linear-gradient(160deg,#e8f0f5 0%,#f5efe8 50%,#e8eef5 100%);
   min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:20px;color:#fff;
+  padding:20px;color:var(--text);
 }
 
-/* ===== MODAL BASE ===== */
-.modal{
-  position:fixed;inset:0;background:rgba(0,0,0,.88);
+/* ===== MODAL ===== */
+.modal{position:fixed;inset:0;background:rgba(60,80,100,.55);
   display:flex;align-items:center;justify-content:center;
-  z-index:999;backdrop-filter:blur(12px);
-}
+  z-index:999;backdrop-filter:blur(8px)}
 .modal.hidden{display:none}
+
 .modal-box{
-  background:linear-gradient(145deg,#1a1a2e,#16213e);
-  border:1px solid rgba(255,255,255,.12);border-radius:26px;
-  padding:32px 26px;max-width:370px;width:90%;text-align:center;
-  box-shadow:0 30px 70px rgba(0,0,0,.6);
+  background:#fff;border-radius:28px;padding:34px 28px;
+  max-width:370px;width:92%;text-align:center;
+  box-shadow:0 20px 60px rgba(91,144,175,.25);
   animation:pop .5s cubic-bezier(.175,.885,.32,1.275)
 }
-@keyframes pop{from{transform:scale(.8) translateY(20px);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
 
-/* ===== WELCOME MODAL ===== */
-#welcomeModal .modal-icon{font-size:56px;margin-bottom:10px}
-#welcomeModal h2{
-  font-size:22px;font-weight:900;margin-bottom:8px;
-  background:linear-gradient(90deg,#f1c40f,#e67e22);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent
+.modal-flower{font-size:44px;margin-bottom:8px}
+.modal-box h2{
+  font-size:21px;font-weight:900;color:var(--blue-dark);margin-bottom:10px
 }
-#welcomeModal p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:20px}
-.deadline{
-  display:inline-block;background:rgba(192,57,43,.2);border:1px solid rgba(192,57,43,.5);
-  color:#ff7675;border-radius:50px;padding:6px 16px;font-size:13px;
-  font-weight:700;margin-bottom:18px
+.modal-box p{color:var(--muted);font-size:13.5px;line-height:1.85;margin-bottom:16px}
+.deadline-chip{
+  display:inline-block;background:#fff5ea;border:1px solid #e8c99a;
+  color:var(--gold);border-radius:50px;padding:6px 16px;
+  font-size:12.5px;font-weight:700;margin-bottom:20px
 }
 
-/* ===== GIFT MODAL ===== */
-#giftModal .gift-header{font-size:52px;margin-bottom:6px}
-#giftModal h2{
-  font-size:20px;font-weight:900;margin-bottom:8px;
-  background:linear-gradient(90deg,#f1c40f,#ff6b6b);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent
+/* gift modal */
+.gift-reveal{
+  background:linear-gradient(135deg,#eaf3f8,#f5efe8);
+  border:1.5px solid var(--blue-light);border-radius:18px;
+  padding:22px;margin-bottom:16px
 }
-#giftModal .gift-sub{color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:18px}
-.gift-card{
-  background:linear-gradient(135deg,#f1c40f,#e67e22);
-  border-radius:14px;padding:20px;margin-bottom:18px;color:#1a1a2e;
-  box-shadow:0 8px 30px rgba(241,196,15,.4)
+.gift-reveal .g-icon{font-size:40px;margin-bottom:8px}
+.gift-reveal .g-title{font-size:15px;font-weight:700;color:var(--blue-dark);margin-bottom:4px}
+.gift-reveal .g-code{
+  font-size:30px;font-weight:900;letter-spacing:5px;
+  color:var(--blue-dark);font-family:monospace;margin:10px 0 4px
 }
-.gift-card .gift-title{font-size:16px;font-weight:900;margin-bottom:4px}
-.gift-card .gift-code{font-size:28px;font-weight:900;letter-spacing:4px;
-  font-family:monospace;margin:8px 0}
-.gift-card .gift-note{font-size:11px;opacity:.75}
+.gift-reveal .g-hint{font-size:11.5px;color:var(--muted)}
 .deadline2{
-  background:rgba(255,255,255,.08);border-radius:10px;padding:10px;
-  font-size:13px;color:#ff7675;margin-bottom:16px
+  background:#fff8f0;border:1px solid #f0d9b5;border-radius:10px;
+  padding:10px 14px;font-size:13px;color:#b8860b;margin-bottom:16px
 }
 
 /* ===== BUTTONS ===== */
 .btn{
-  width:100%;padding:15px;border:none;border-radius:13px;font-size:16px;
-  font-weight:700;font-family:'Cairo';cursor:pointer;transition:.25s;
-  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:15px;border:none;border-radius:13px;
+  font-size:15.5px;font-weight:700;font-family:'Cairo';
+  cursor:pointer;transition:.25s;
+  display:flex;align-items:center;justify-content:center;gap:8px
 }
 .btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.5;pointer-events:none}
-.btn-gold{background:linear-gradient(135deg,#f1c40f,#e67e22);color:#1a1a2e;
-  box-shadow:0 4px 20px rgba(241,196,15,.4)}
-.btn-red{background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;
-  box-shadow:0 4px 20px rgba(192,57,43,.4)}
-.btn-green{background:linear-gradient(135deg,#1a9c3e,#25D366);color:#fff;
-  box-shadow:0 4px 20px rgba(37,211,102,.35);display:none}
-.btn-ghost{background:rgba(255,255,255,.07);color:#fff;
-  border:1px solid rgba(255,255,255,.15)}
+.btn:disabled{opacity:.45;pointer-events:none}
+.btn-blue{
+  background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;
+  box-shadow:0 5px 20px rgba(91,144,175,.35)
+}
+.btn-wa{background:linear-gradient(135deg,#1a9c3e,#25D366);color:#fff;
+  box-shadow:0 5px 18px rgba(37,211,102,.3)}
+.btn-ghost{
+  background:transparent;color:var(--blue);
+  border:1.5px solid var(--blue-light);margin-top:8px
+}
 
 /* ===== APP ===== */
-.app{width:100%;max-width:480px}
+.app{width:100%;max-width:470px}
 
-.header{text-align:center;margin-bottom:20px}
-.logo{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);
-  padding:7px 16px;border-radius:50px;border:1px solid rgba(255,255,255,.1);margin-bottom:12px}
-.pulse{width:9px;height:9px;border-radius:50%;background:#e74c3c;
-  box-shadow:0 0 8px #e74c3c;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.header h1{font-size:24px;font-weight:900;
-  background:linear-gradient(90deg,#fff,#f1c40f);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.header p{color:var(--muted);font-size:13px;margin-top:4px}
+/* header */
+.brand{text-align:center;margin-bottom:18px}
+.brand-logo{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff;padding:8px 18px;border-radius:50px;
+  border:1px solid #dde8f0;box-shadow:0 2px 10px rgba(91,144,175,.12);
+  margin-bottom:12px;font-size:13px;color:var(--blue-dark);font-weight:700
+}
+.dot-live{width:8px;height:8px;border-radius:50%;background:#5b90af;
+  animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.brand h1{font-size:22px;font-weight:900;color:var(--blue-dark)}
+.brand p{color:var(--muted);font-size:13px;margin-top:3px}
 
+/* counter */
 .counter-bar{
   display:flex;align-items:center;justify-content:center;gap:8px;
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
-  border-radius:50px;padding:10px 20px;margin-bottom:18px;font-size:14px
+  background:#fff;border:1px solid #dde8f0;border-radius:50px;
+  padding:10px 20px;margin-bottom:14px;font-size:13.5px;
+  box-shadow:0 2px 12px rgba(91,144,175,.1)
 }
-.counter-bar .num{color:var(--gold);font-weight:900;font-size:20px}
+.counter-bar .num{color:var(--blue-dark);font-weight:900;font-size:19px}
 
-/* card */
-.card-section{
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  border-radius:var(--radius);padding:14px;margin-bottom:14px
+/* urgency */
+.urgency{
+  background:#fffbf0;border:1px solid #f0d9b5;border-radius:11px;
+  padding:10px 14px;margin-bottom:14px;
+  font-size:12.5px;color:#a07820;text-align:center
 }
-#capture-area{position:relative;border-radius:12px;overflow:hidden;line-height:0;
-  box-shadow:0 10px 40px rgba(0,0,0,.5)}
+
+/* card section */
+.card-section{
+  background:#fff;border-radius:var(--radius);
+  border:1px solid #dde8f0;padding:14px;margin-bottom:14px;
+  box-shadow:0 4px 20px rgba(91,144,175,.1)
+}
+
+/* ===== EID CARD (pure CSS — no external image needed) ===== */
+#capture-area{
+  position:relative;width:100%;border-radius:14px;overflow:hidden;
+  background:#f9f7f4;line-height:0;
+}
 #template-img{width:100%;height:auto;display:block}
+
+/* name overlay */
 #display-name{
-  position:absolute;bottom:15%;left:50%;transform:translateX(-50%);
-  width:90%;font-family:'Amiri',serif;font-size:clamp(24px,5.5vw,40px);
-  color:#5b90af;text-shadow:2px 2px 8px rgba(171,199,169,.8);
-  text-align:center;pointer-events:none
+  position:absolute;
+  bottom:13%;left:50%;transform:translateX(-50%);
+  width:88%;font-family:'Amiri',serif;
+  font-size:clamp(22px,5.5vw,38px);
+  color:var(--blue);
+  text-shadow:0 2px 8px rgba(91,144,175,.3);
+  text-align:center;pointer-events:none;line-height:1.4
 }
 
 /* input */
-.input-wrap{position:relative;margin-bottom:12px}
+.input-wrap{margin-bottom:12px}
 .input-wrap input{
-  width:100%;padding:15px 16px;
-  background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);
-  border-radius:13px;color:#fff;font-size:18px;font-family:'Cairo';
-  outline:none;transition:.25s;text-align:center;
+  width:100%;padding:15px;
+  background:#fff;border:1.5px solid #dde8f0;
+  border-radius:13px;color:var(--text);font-size:17px;
+  font-family:'Cairo';outline:none;transition:.25s;text-align:center;
+  box-shadow:0 2px 10px rgba(91,144,175,.08)
 }
-.input-wrap input::placeholder{color:rgba(255,255,255,.35)}
-.input-wrap input:focus{border-color:var(--gold);background:rgba(255,255,255,.1)}
+.input-wrap input::placeholder{color:#bbb}
+.input-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(91,144,175,.15)}
 
-/* urgency banner */
-.urgency{
-  display:flex;align-items:center;justify-content:center;gap:6px;
-  background:linear-gradient(90deg,rgba(192,57,43,.25),rgba(192,57,43,.1));
-  border:1px solid rgba(192,57,43,.4);border-radius:10px;
-  padding:10px 14px;margin-bottom:12px;font-size:13px;color:#ff7675
+/* steps hint */
+.steps{
+  display:flex;justify-content:center;gap:6px;
+  margin-bottom:14px;flex-wrap:wrap
 }
+.step{
+  display:flex;align-items:center;gap:5px;
+  background:#fff;border:1px solid #dde8f0;border-radius:50px;
+  padding:6px 12px;font-size:11.5px;color:var(--muted)
+}
+.step .n{
+  width:18px;height:18px;border-radius:50%;background:var(--blue);
+  color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;flex-shrink:0
+}
+.step.done .n{background:#25D366}
+.step.active .n{background:var(--blue-dark)}
 
-.footer{text-align:center;margin-top:18px;color:rgba(255,255,255,.2);font-size:11px}
+.footer{text-align:center;margin-top:18px;color:#bbb;font-size:11px}
 
 /* toast */
 .toast{
-  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(16px);
-  background:#1a1a2e;border:1px solid rgba(255,255,255,.15);
-  color:#fff;padding:11px 22px;border-radius:50px;font-size:14px;
-  opacity:0;transition:.35s;z-index:9999;pointer-events:none;white-space:nowrap
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(14px);
+  background:var(--blue-dark);color:#fff;padding:11px 22px;
+  border-radius:50px;font-size:13.5px;opacity:0;transition:.35s;
+  z-index:9999;pointer-events:none;white-space:nowrap;
+  box-shadow:0 5px 20px rgba(61,110,138,.4)
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 
-<!-- ===== WELCOME MODAL ===== -->
+<!-- WELCOME MODAL -->
 <div class="modal" id="welcomeModal">
   <div class="modal-box">
-    <div class="modal-icon">🎁</div>
-    <h2>شرّفنا الفرع! خذ هديتك 🎉</h2>
+    <div class="modal-flower">🌸</div>
+    <h2>شرّفنا الفرع وخذ هديتك 🎁</h2>
     <p>
-      صمّم بطاقة العيد باسمك وشاركها مع أهلك وأحبابك —<br>
-      وبمجرد مشاركتها <strong style="color:#f1c40f">ستظهر لك هديتك الخاصة</strong> فوراً! ✨
+      صمّم بطاقة عيدك باسمك وأرسلها لأهلك وأحبابك —<br>
+      وبعد المشاركة على الواتساب <strong style="color:var(--blue-dark)">ستظهر لك هديتك الخاصة فوراً</strong> 🎉
     </p>
-    <div class="deadline">⏳ العرض ينتهي آخر يوم العيد — 7 ذي الحجة</div>
-    <button class="btn btn-gold" onclick="closeWelcome()">ابدأ وخذ هديتك 🚀</button>
+    <div class="deadline-chip">⏳ العرض ينتهي يوم 7 العيد فقط</div>
+    <button class="btn btn-blue" onclick="closeWelcome()">ابدأ الآن ✨</button>
   </div>
 </div>
 
-<!-- ===== GIFT MODAL ===== -->
+<!-- GIFT MODAL -->
 <div class="modal hidden" id="giftModal">
   <div class="modal-box">
-    <div class="gift-header">🎁</div>
-    <h2>شرّفتنا والهدية لك! 🥳</h2>
-    <p class="gift-sub">
-      بطاقتك وصلت لأحبابك — وهذي هديتك منّا بمناسبة العيد الكبير!<br>
-      نسعد بزيارتك للفرع لاستلامها 🤍
+    <div class="modal-flower">🎁</div>
+    <h2>شرّفتنا 🤍 هديتك جاهزة!</h2>
+    <p style="color:var(--muted);font-size:13.5px;line-height:1.8;margin-bottom:14px">
+      شكراً لمشاركتك بطاقة العيد مع أحبابك —<br>
+      هذا الكود هديتنا لك بمناسبة العيد الكبير 🌙
     </p>
-
-    <div class="gift-card">
-      <div class="gift-title">🎀 هديتك الخاصة</div>
-      <div class="gift-code" id="giftCode">EID-2026</div>
-      <div class="gift-note">احتفظ بهذا الكود وأبرزه عند الزيارة</div>
+    <div class="gift-reveal">
+      <div class="g-icon">🎀</div>
+      <div class="g-title">كود هديتك الخاصة</div>
+      <div class="g-code" id="giftCode">EID-????</div>
+      <div class="g-hint">احتفظ بهذا الكود وأبرزه عند زيارة الفرع</div>
     </div>
-
     <div class="deadline2">
-      ⏳ آخر موعد لاستلام الهدية: يوم 7 العيد — لا تفوّتها!
+      ⏳ آخر موعد لاستلام الهدية: <strong>يوم 7 ذي الحجة</strong> — لا تفوّتها!
     </div>
-
-    <button class="btn btn-green" id="waShareBtn" style="display:flex;margin-bottom:10px" onclick="shareWhatsapp()">
-      📲 شارك البطاقة على الواتساب
-    </button>
-    <button class="btn btn-ghost" onclick="closeGift()">عودة للبطاقة</button>
+    <button class="btn btn-ghost" onclick="closeGift()">← العودة</button>
   </div>
 </div>
 
-<!-- ===== APP ===== -->
+<!-- APP -->
 <div class="app">
-  <div class="header">
-    <div class="logo"><div class="pulse"></div><span>منصة التهنئة الذكية</span></div>
-    <h1>انشر الفرح هذا العيد 🌙</h1>
-    <p>ضع اسمك في البطاقة، شاركها، واستلم هديتك!</p>
+
+  <div class="brand">
+    <div class="brand-logo"><div class="dot-live"></div> Mandolin</div>
+    <h1>تهنئة العيد 🌙</h1>
+    <p>ضع اسمك، شارك البطاقة، واستلم هديتك</p>
   </div>
 
   <div class="counter-bar">
-    <span>❤️ تم نشر الفرح إلى</span>
+    <span>💌 تم إرسال التهاني إلى</span>
     <span class="num" id="joy-count">—</span>
     <span>شخص</span>
   </div>
 
   <div class="urgency">
-    🔥 العرض حصري وينتهي آخر يوم العيد — <strong>7 ذي الحجة</strong>
+    🌸 عرض خاص — استلم هديتك عند زيارة الفرع · <strong>آخر يوم 7 العيد</strong>
   </div>
 
+  <!-- steps -->
+  <div class="steps">
+    <div class="step active" id="s1"><span class="n">١</span>اكتب اسمك</div>
+    <div class="step" id="s2"><span class="n">٢</span>حمّل البطاقة</div>
+    <div class="step" id="s3"><span class="n">٣</span>شارك وخذ هديتك</div>
+  </div>
+
+  <!-- card -->
   <div class="card-section">
     <div id="capture-area">
-      <img id="template-img" src="eid-card.jpg" crossorigin="anonymous">
+      <img id="template-img" src="eid-card.jpg" crossorigin="anonymous"
+           onerror="this.style.display='none';document.getElementById('fallback-card').style.display='flex'">
+      <!-- fallback if no image -->
+      <div id="fallback-card" style="display:none;flex-direction:column;align-items:center;
+           justify-content:center;background:linear-gradient(160deg,#f0f7fc,#faf5ef);
+           padding:40px 20px;min-height:340px;text-align:center;border-radius:14px">
+        <div style="font-size:13px;color:var(--blue);font-weight:700;letter-spacing:2px;margin-bottom:8px">MANDOLIN</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6">نهنئكم بحلول<br>عيد الفطر المبارك</div>
+        <div style="font-family:'Amiri';font-size:52px;color:var(--blue);line-height:1;margin-bottom:14px">عيد سعيد</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:18px">
+          أعاده الله عليكم أعواماً مديدة وأنتم في تمام الرضا<br>
+          والطمأنينة، يحيطكم الخير من كل جهة وترافقكم البركة<br>في كل خطوة.
+        </div>
+        <div style="font-size:12px;color:var(--blue-dark);font-weight:700">
+          هذه التهنئة تحمل لك عيدية منّا — استلمها عند زيارتك
+        </div>
+      </div>
       <div id="display-name">الاسم هنا</div>
     </div>
   </div>
 
+  <!-- input -->
   <div class="input-wrap">
     <input type="text" id="nameInput" placeholder="✍️  اكتب اسمك هنا..." maxlength="30" oninput="onName(this)">
   </div>
 
-  <button class="btn btn-red" id="downloadBtn" onclick="handleDownload()">
-    ⬇️ صمّم وحمّل البطاقة
-  </button>
-  <br>
-  <button class="btn btn-green" id="shareBtn" onclick="openGift()">
-    🎁 شارك واحصل على هديتك!
+  <button class="btn btn-blue" id="downloadBtn" onclick="handleDownload()" style="margin-bottom:10px">
+    ⬇️ حمّل بطاقتك
   </button>
 
-  <div class="footer">كل عام وأنتم بخير © 2026</div>
+  <button class="btn btn-wa" id="shareBtn" onclick="handleShare()" style="display:none">
+    📲 شارك على الواتساب واحصل على هديتك 🎁
+  </button>
+
+  <div class="footer">كل عام وأنتم بخير · Mandolin © 2026</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbx4IYUF-IlQEtBANNRfo_Lu0qai8ZWqTRn0e6IzczRSQeKTJ2Hi68JuQYpjQeKTsT/exec';
-let blob=null;
+let cardBlob=null;
+let shared=false;
 
 /* counter */
 async function fetchCounter(){
@@ -252,19 +306,28 @@ async function fetchCounter(){
 }
 fetchCounter();
 
-/* name */
+/* name update */
 function onName(el){
-  document.getElementById('display-name').innerText=el.value||'الاسم هنا';
+  const v=el.value;
+  document.getElementById('display-name').innerText=v||'الاسم هنا';
+  if(v) markStep(1);
+}
+
+/* step progress */
+function markStep(n){
+  for(let i=1;i<=3;i++){
+    const el=document.getElementById('s'+i);
+    el.className='step'+(i<n?' done':i===n?' active':'');
+  }
 }
 
 /* modals */
 function closeWelcome(){document.getElementById('welcomeModal').classList.add('hidden')}
 function closeGift(){document.getElementById('giftModal').classList.add('hidden')}
 
-function openGift(){
-  // generate unique code per user
-  const name=document.getElementById('nameInput').value||'';
-  const code='EID-'+Math.random().toString(36).slice(2,6).toUpperCase();
+function showGift(){
+  const code='EID-'+Math.random().toString(36).slice(2,5).toUpperCase()+
+              Math.floor(10+Math.random()*90);
   document.getElementById('giftCode').innerText=code;
   document.getElementById('giftModal').classList.remove('hidden');
 }
@@ -275,53 +338,69 @@ async function handleDownload(){
   if(!name){showToast('✍️ اكتب اسمك أولاً يا غالي');return;}
   const btn=document.getElementById('downloadBtn');
   btn.disabled=true;btn.innerHTML='⏳ جاري التصميم...';
+
   try{
-    const canvas=await html2canvas(document.getElementById('capture-area'),{scale:3,useCORS:true,logging:false});
+    const canvas=await html2canvas(document.getElementById('capture-area'),
+      {scale:3,useCORS:true,logging:false,backgroundColor:'#f9f7f4'});
     canvas.toBlob(b=>{
-      blob=b;
+      cardBlob=b;
       const url=URL.createObjectURL(b);
-      Object.assign(document.createElement('a'),{download:`تهنئة_${name}.png`,href:url}).click();
-      // show share button
+      Object.assign(document.createElement('a'),
+        {download:`تهنئة_عيد_${name}.png`,href:url}).click();
+
       document.getElementById('shareBtn').style.display='flex';
       btn.innerHTML='✅ تم — حمّل مرة أخرى';
       btn.disabled=false;
-      // update counter
-      fetch(SCRIPT_URL,{method:'POST',mode:'no-cors'});
+      markStep(2);
+      showToast('🎉 تم! الآن شارك البطاقة واحصل على هديتك');
+
+      // update counter silently
+      fetch(SCRIPT_URL,{method:'POST',mode:'no-cors'}).catch(()=>{});
       const el=document.getElementById('joy-count');
-      const cur=parseInt((el.innerText||'0').replace(/\D/g,''))||1291;
+      const cur=parseInt((el.innerText||'').replace(/\D/g,''))||1291;
       el.innerText=(cur+1).toLocaleString('ar-SA');
-      showToast('🎉 تم! الآن شارك واحصل على هديتك');
     });
   }catch{
     showToast('❌ حدث خطأ، حاول مرة أخرى');
-    btn.innerHTML='⬇️ صمّم وحمّل البطاقة';
+    btn.innerHTML='⬇️ حمّل بطاقتك';
     btn.disabled=false;
   }
 }
 
-/* share via whatsapp */
-async function shareWhatsapp(){
+/* share → then reveal gift */
+async function handleShare(){
+  if(!cardBlob){showToast('حمّل البطاقة أولاً');return;}
   const name=document.getElementById('nameInput').value||'صديقي';
-  const code=document.getElementById('giftCode').innerText;
+
   const txt=
-`🌙 عيدك مبارك يا ${name}!
+`🌙 ${name} يهنئك بالعيد!
 
-صمّمت لك بطاقة تهنئة خاصة بمناسبة العيد الكبير 🎉
+أعاده الله عليكم أعواماً مديدة وأنتم في تمام الرضا والطمأنينة 🤍
 
-📍 شرّفنا الفرع واستلم هديتك — آخر موعد يوم 7 العيد ⏳
+🎁 هذه البطاقة تحمل لك عيدية خاصة من Mandolin
+📍 شرّفنا الفرع واستلمها — آخر يوم 7 العيد ⏳
 
-✨ صمّم بطاقتك الخاصة من هنا:
+✨ صمّم بطاقتك الخاصة:
 ${location.href}`;
 
-  if(blob&&navigator.canShare?.({files:[new File([blob],'eid.png',{type:'image/png'})]})){
-    try{
-      await navigator.share({
-        files:[new File([blob],'تهنئة_العيد.png',{type:'image/png'})],
-        text:txt
-      });
-    }catch(e){console.log(e)}
-  }else{
-    window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  const file=new File([cardBlob],'تهنئة_العيد.png',{type:'image/png'});
+
+  try{
+    if(navigator.share&&navigator.canShare?.({files:[file]})){
+      await navigator.share({files:[file],text:txt});
+    }else{
+      window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+    }
+    // after share → show gift
+    markStep(3);
+    setTimeout(showGift,600);
+  }catch(e){
+    // user cancelled → still show gift (good UX)
+    if(e.name!=='AbortError'){
+      window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+    }
+    markStep(3);
+    setTimeout(showGift,400);
   }
 }
 
@@ -329,7 +408,7 @@ ${location.href}`;
 function showToast(msg){
   const t=document.getElementById('toast');
   t.innerText=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
+  setTimeout(()=>t.classList.remove('show'),3200);
 }
 </script>
 </body>
