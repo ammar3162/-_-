@@ -1,236 +1,336 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التهنئة الذكية | انشر الفرح</title>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --primary: #e53e3e;
-            --dark: #1a202c;
-            --whatsapp: #25D366;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة التهنئة الذكية</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:#c0392b;--gold:#f1c40f;--green:#25D366;--dark:#1a1a2e;--muted:#aaa;--radius:18px}
 
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+body{
+  font-family:'Cairo',sans-serif;
+  background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:20px;color:#fff;
+}
 
-        /* نافذة العيدية */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); display: flex; align-items: center;
-            justify-content: center; z-index: 2000; backdrop-filter: blur(8px);
-        }
+/* ===== MODAL BASE ===== */
+.modal{
+  position:fixed;inset:0;background:rgba(0,0,0,.88);
+  display:flex;align-items:center;justify-content:center;
+  z-index:999;backdrop-filter:blur(12px);
+}
+.modal.hidden{display:none}
+.modal-box{
+  background:linear-gradient(145deg,#1a1a2e,#16213e);
+  border:1px solid rgba(255,255,255,.12);border-radius:26px;
+  padding:32px 26px;max-width:370px;width:90%;text-align:center;
+  box-shadow:0 30px 70px rgba(0,0,0,.6);
+  animation:pop .5s cubic-bezier(.175,.885,.32,1.275)
+}
+@keyframes pop{from{transform:scale(.8) translateY(20px);opacity:0}to{transform:scale(1);opacity:1}}
 
-        .modal-content {
-            background: white; padding: 30px; border-radius: 25px;
-            max-width: 400px; width: 85%; text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+/* ===== WELCOME MODAL ===== */
+#welcomeModal .modal-icon{font-size:56px;margin-bottom:10px}
+#welcomeModal h2{
+  font-size:22px;font-weight:900;margin-bottom:8px;
+  background:linear-gradient(90deg,#f1c40f,#e67e22);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent
+}
+#welcomeModal p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:20px}
+.deadline{
+  display:inline-block;background:rgba(192,57,43,.2);border:1px solid rgba(192,57,43,.5);
+  color:#ff7675;border-radius:50px;padding:6px 16px;font-size:13px;
+  font-weight:700;margin-bottom:18px
+}
 
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+/* ===== GIFT MODAL ===== */
+#giftModal .gift-header{font-size:52px;margin-bottom:6px}
+#giftModal h2{
+  font-size:20px;font-weight:900;margin-bottom:8px;
+  background:linear-gradient(90deg,#f1c40f,#ff6b6b);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent
+}
+#giftModal .gift-sub{color:var(--muted);font-size:13px;line-height:1.75;margin-bottom:18px}
+.gift-card{
+  background:linear-gradient(135deg,#f1c40f,#e67e22);
+  border-radius:14px;padding:20px;margin-bottom:18px;color:#1a1a2e;
+  box-shadow:0 8px 30px rgba(241,196,15,.4)
+}
+.gift-card .gift-title{font-size:16px;font-weight:900;margin-bottom:4px}
+.gift-card .gift-code{font-size:28px;font-weight:900;letter-spacing:4px;
+  font-family:monospace;margin:8px 0}
+.gift-card .gift-note{font-size:11px;opacity:.75}
+.deadline2{
+  background:rgba(255,255,255,.08);border-radius:10px;padding:10px;
+  font-size:13px;color:#ff7675;margin-bottom:16px
+}
 
-        /* التصميم الأساسي */
-        .main-wrapper {
-            background: white; padding: 20px; border-radius: 25px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1); width: 100%;
-            max-width: 480px; text-align: center;
-        }
+/* ===== BUTTONS ===== */
+.btn{
+  width:100%;padding:15px;border:none;border-radius:13px;font-size:16px;
+  font-weight:700;font-family:'Cairo';cursor:pointer;transition:.25s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;pointer-events:none}
+.btn-gold{background:linear-gradient(135deg,#f1c40f,#e67e22);color:#1a1a2e;
+  box-shadow:0 4px 20px rgba(241,196,15,.4)}
+.btn-red{background:linear-gradient(135deg,#c0392b,#e74c3c);color:#fff;
+  box-shadow:0 4px 20px rgba(192,57,43,.4)}
+.btn-green{background:linear-gradient(135deg,#1a9c3e,#25D366);color:#fff;
+  box-shadow:0 4px 20px rgba(37,211,102,.35);display:none}
+.btn-ghost{background:rgba(255,255,255,.07);color:#fff;
+  border:1px solid rgba(255,255,255,.15)}
 
-        .joy-badge {
-            background: #fff5f5; color: var(--primary); padding: 8px 18px;
-            border-radius: 50px; font-size: 14px; font-weight: bold;
-            display: inline-flex; margin-bottom: 15px; border: 1px solid #fed7d7;
-        }
+/* ===== APP ===== */
+.app{width:100%;max-width:480px}
 
-        #capture-area {
-            position: relative; width: 100%; border-radius: 15px;
-            overflow: hidden; margin-bottom: 20px; background: #fff;
-            line-height: 0;
-        }
+.header{text-align:center;margin-bottom:20px}
+.logo{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);
+  padding:7px 16px;border-radius:50px;border:1px solid rgba(255,255,255,.1);margin-bottom:12px}
+.pulse{width:9px;height:9px;border-radius:50%;background:#e74c3c;
+  box-shadow:0 0 8px #e74c3c;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.header h1{font-size:24px;font-weight:900;
+  background:linear-gradient(90deg,#fff,#f1c40f);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{color:var(--muted);font-size:13px;margin-top:4px}
 
-        #template-img { width: 100%; height: auto; display: block; }
+.counter-bar{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:50px;padding:10px 20px;margin-bottom:18px;font-size:14px
+}
+.counter-bar .num{color:var(--gold);font-weight:900;font-size:20px}
 
-        #display-name {
-            position: absolute; 
-            bottom: 16%; /* مكان الاسم أسفل القالب رقم 4 */
-            left: 50%;
-            transform: translateX(-50%); 
-            width: 90%;
-            font-family: 'Amiri', serif; 
-            font-size: clamp(24px, 5vw, 38px);
-            color: #5b90af; /* اللون السماوي المطلوب */
-            text-shadow: 2px 2px 8px rgba(171, 199, 169, 0.8); /* ظل أخضر خفيف */
-            text-align: center; 
-            pointer-events: none;
-        }
+/* card */
+.card-section{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--radius);padding:14px;margin-bottom:14px
+}
+#capture-area{position:relative;border-radius:12px;overflow:hidden;line-height:0;
+  box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#template-img{width:100%;height:auto;display:block}
+#display-name{
+  position:absolute;bottom:15%;left:50%;transform:translateX(-50%);
+  width:90%;font-family:'Amiri',serif;font-size:clamp(24px,5.5vw,40px);
+  color:#5b90af;text-shadow:2px 2px 8px rgba(171,199,169,.8);
+  text-align:center;pointer-events:none
+}
 
-        .action-btns { display: flex; flex-direction: column; gap: 10px; }
+/* input */
+.input-wrap{position:relative;margin-bottom:12px}
+.input-wrap input{
+  width:100%;padding:15px 16px;
+  background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);
+  border-radius:13px;color:#fff;font-size:18px;font-family:'Cairo';
+  outline:none;transition:.25s;text-align:center;
+}
+.input-wrap input::placeholder{color:rgba(255,255,255,.35)}
+.input-wrap input:focus{border-color:var(--gold);background:rgba(255,255,255,.1)}
 
-        input {
-            padding: 16px; border: 2px solid #edf2f7; border-radius: 12px;
-            font-size: 18px; text-align: center; font-family: 'Cairo'; outline: none;
-        }
+/* urgency banner */
+.urgency{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(90deg,rgba(192,57,43,.25),rgba(192,57,43,.1));
+  border:1px solid rgba(192,57,43,.4);border-radius:10px;
+  padding:10px 14px;margin-bottom:12px;font-size:13px;color:#ff7675
+}
 
-        .btn {
-            padding: 16px; border: none; border-radius: 12px;
-            font-weight: bold; font-size: 17px; cursor: pointer;
-            transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
+.footer{text-align:center;margin-top:18px;color:rgba(255,255,255,.2);font-size:11px}
 
-        .btn-download { background: var(--dark); color: white; }
-        .btn-share { background: var(--whatsapp); color: white; display: none; }
-
-        .footer-text { font-size: 11px; color: #a0aec0; margin-top: 15px; }
-    </style>
+/* toast */
+.toast{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(16px);
+  background:#1a1a2e;border:1px solid rgba(255,255,255,.15);
+  color:#fff;padding:11px 22px;border-radius:50px;font-size:14px;
+  opacity:0;transition:.35s;z-index:9999;pointer-events:none;white-space:nowrap
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
 </head>
 <body>
 
-<div class="modal-overlay" id="welcomeModal">
-    <div class="modal-content">
-        <h2 style="margin:0;">🎁 عيدية خاصة!</h2>
-        <p style="font-size: 15px; color: #4a5568;">
-            أرسل تهنئة العيد لمن تحب، وإذا وصلتهم بطاقتك… لهم ولكم عيدية خاصة منّا 🎁
-        </p>
-        <button class="btn btn-download" style="width:100%" onclick="closeModal()">ابدأ الآن ✨</button>
-    </div>
+<!-- ===== WELCOME MODAL ===== -->
+<div class="modal" id="welcomeModal">
+  <div class="modal-box">
+    <div class="modal-icon">🎁</div>
+    <h2>شرّفنا الفرع! خذ هديتك 🎉</h2>
+    <p>
+      صمّم بطاقة العيد باسمك وشاركها مع أهلك وأحبابك —<br>
+      وبمجرد مشاركتها <strong style="color:#f1c40f">ستظهر لك هديتك الخاصة</strong> فوراً! ✨
+    </p>
+    <div class="deadline">⏳ العرض ينتهي آخر يوم العيد — 7 ذي الحجة</div>
+    <button class="btn btn-gold" onclick="closeWelcome()">ابدأ وخذ هديتك 🚀</button>
+  </div>
 </div>
 
-<div class="main-wrapper">
-    <div class="joy-badge">
-        ❤️ تم نشر الفرح إلى <span id="joy-count">...</span> شخص
+<!-- ===== GIFT MODAL ===== -->
+<div class="modal hidden" id="giftModal">
+  <div class="modal-box">
+    <div class="gift-header">🎁</div>
+    <h2>شرّفتنا والهدية لك! 🥳</h2>
+    <p class="gift-sub">
+      بطاقتك وصلت لأحبابك — وهذي هديتك منّا بمناسبة العيد الكبير!<br>
+      نسعد بزيارتك للفرع لاستلامها 🤍
+    </p>
+
+    <div class="gift-card">
+      <div class="gift-title">🎀 هديتك الخاصة</div>
+      <div class="gift-code" id="giftCode">EID-2026</div>
+      <div class="gift-note">احتفظ بهذا الكود وأبرزه عند الزيارة</div>
     </div>
 
+    <div class="deadline2">
+      ⏳ آخر موعد لاستلام الهدية: يوم 7 العيد — لا تفوّتها!
+    </div>
+
+    <button class="btn btn-green" id="waShareBtn" style="display:flex;margin-bottom:10px" onclick="shareWhatsapp()">
+      📲 شارك البطاقة على الواتساب
+    </button>
+    <button class="btn btn-ghost" onclick="closeGift()">عودة للبطاقة</button>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div class="app">
+  <div class="header">
+    <div class="logo"><div class="pulse"></div><span>منصة التهنئة الذكية</span></div>
+    <h1>انشر الفرح هذا العيد 🌙</h1>
+    <p>ضع اسمك في البطاقة، شاركها، واستلم هديتك!</p>
+  </div>
+
+  <div class="counter-bar">
+    <span>❤️ تم نشر الفرح إلى</span>
+    <span class="num" id="joy-count">—</span>
+    <span>شخص</span>
+  </div>
+
+  <div class="urgency">
+    🔥 العرض حصري وينتهي آخر يوم العيد — <strong>7 ذي الحجة</strong>
+  </div>
+
+  <div class="card-section">
     <div id="capture-area">
-        <img id="template-img" src="  eid-card.jpg " crossorigin="anonymous">
-        <div id="display-name">الاسم هنا</div>
+      <img id="template-img" src="eid-card.jpg" crossorigin="anonymous">
+      <div id="display-name">الاسم هنا</div>
     </div>
+  </div>
 
-    <div class="action-btns">
-        <input type="text" id="nameInput" placeholder="اكتب اسمك هنا..." oninput="updateUI()" maxlength="30">
-        
-        <button id="downloadBtn" class="btn btn-download" onclick="handleDownload()">
-            ✅ صمم وحمل البطاقة
-        </button>
+  <div class="input-wrap">
+    <input type="text" id="nameInput" placeholder="✍️  اكتب اسمك هنا..." maxlength="30" oninput="onName(this)">
+  </div>
 
-        <button id="shareBtn" class="btn btn-share" onclick="handleShare()">
-            📲 مشاركة مباشرة للواتساب
-        </button>
-    </div>
+  <button class="btn btn-red" id="downloadBtn" onclick="handleDownload()">
+    ⬇️ صمّم وحمّل البطاقة
+  </button>
+  <br>
+  <button class="btn btn-green" id="shareBtn" onclick="openGift()">
+    🎁 شارك واحصل على هديتك!
+  </button>
 
-    <div class="footer-text">كل عام وأنتم بخير © 2026</div>
+  <div class="footer">كل عام وأنتم بخير © 2026</div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx4IYUF-IlQEtBANNRfo_Lu0qai8ZWqTRn0e6IzczRSQeKTJ2Hi68JuQYpjQWtqrjsT/exec';
-    let generatedBlob = null;
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbx4IYUF-IlQEtBANNRfo_Lu0qai8ZWqTRn0e6IzczRSQeKTJ2Hi68JuQYpjQeKTsT/exec';
+let blob=null;
 
-    function closeModal() { document.getElementById('welcomeModal').style.display = 'none'; }
+/* counter */
+async function fetchCounter(){
+  try{
+    const r=await fetch(SCRIPT_URL+'?t='+Date.now());
+    const n=await r.text();
+    document.getElementById('joy-count').innerText=parseInt(n).toLocaleString('ar-SA');
+  }catch{document.getElementById('joy-count').innerText='١٬٢٩١';}
+}
+fetchCounter();
 
-    async function fetchCounter() {
-        try {
-            const response = await fetch(SCRIPT_URL + '?t=' + new Date().getTime());
-            const count = await response.text();
-            document.getElementById('joy-count').innerText = parseInt(count).toLocaleString();
-        } catch (e) { document.getElementById('joy-count').innerText = "1,291"; }
-    }
-    fetchCounter();
+/* name */
+function onName(el){
+  document.getElementById('display-name').innerText=el.value||'الاسم هنا';
+}
 
-    function updateUI() {
-        document.getElementById('display-name').innerText = document.getElementById('nameInput').value || "الاسم هنا";
-    }
+/* modals */
+function closeWelcome(){document.getElementById('welcomeModal').classList.add('hidden')}
+function closeGift(){document.getElementById('giftModal').classList.add('hidden')}
 
-    async function handleDownload() {
-        const name = document.getElementById('nameInput').value;
-        if (!name) { alert("اكتب اسمك أولاً يا غالي"); return; }
+function openGift(){
+  // generate unique code per user
+  const name=document.getElementById('nameInput').value||'';
+  const code='EID-'+Math.random().toString(36).slice(2,6).toUpperCase();
+  document.getElementById('giftCode').innerText=code;
+  document.getElementById('giftModal').classList.remove('hidden');
+}
 
-        const btn = document.getElementById('downloadBtn');
-        btn.innerText = "جاري الحفظ...";
-        btn.disabled = true;
+/* download */
+async function handleDownload(){
+  const name=document.getElementById('nameInput').value.trim();
+  if(!name){showToast('✍️ اكتب اسمك أولاً يا غالي');return;}
+  const btn=document.getElementById('downloadBtn');
+  btn.disabled=true;btn.innerHTML='⏳ جاري التصميم...';
+  try{
+    const canvas=await html2canvas(document.getElementById('capture-area'),{scale:3,useCORS:true,logging:false});
+    canvas.toBlob(b=>{
+      blob=b;
+      const url=URL.createObjectURL(b);
+      Object.assign(document.createElement('a'),{download:`تهنئة_${name}.png`,href:url}).click();
+      // show share button
+      document.getElementById('shareBtn').style.display='flex';
+      btn.innerHTML='✅ تم — حمّل مرة أخرى';
+      btn.disabled=false;
+      // update counter
+      fetch(SCRIPT_URL,{method:'POST',mode:'no-cors'});
+      const el=document.getElementById('joy-count');
+      const cur=parseInt((el.innerText||'0').replace(/\D/g,''))||1291;
+      el.innerText=(cur+1).toLocaleString('ar-SA');
+      showToast('🎉 تم! الآن شارك واحصل على هديتك');
+    });
+  }catch{
+    showToast('❌ حدث خطأ، حاول مرة أخرى');
+    btn.innerHTML='⬇️ صمّم وحمّل البطاقة';
+    btn.disabled=false;
+  }
+}
 
-        try {
-            const canvas = await html2canvas(document.getElementById('capture-area'), { scale: 3, useCORS: true });
-            
-            canvas.toBlob(async (blob) => {
-                generatedBlob = blob;
-                const url = URL.createObjectURL(blob);
-                
-                const link = document.createElement('a');
-                link.download = `تهنئة_${name}.png`;
-                link.href = url;
-                link.click();
+/* share via whatsapp */
+async function shareWhatsapp(){
+  const name=document.getElementById('nameInput').value||'صديقي';
+  const code=document.getElementById('giftCode').innerText;
+  const txt=
+`🌙 عيدك مبارك يا ${name}!
 
-                document.getElementById('shareBtn').style.display = 'flex';
-                btn.innerText = "✨ تم الحفظ بنجاح";
-                
-                fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors' });
-                let current = parseInt(document.getElementById('joy-count').innerText.replace(/,/g, ''));
-                document.getElementById('joy-count').innerText = (current + 1).toLocaleString();
-            });
+صمّمت لك بطاقة تهنئة خاصة بمناسبة العيد الكبير 🎉
 
-        } catch (err) { alert("حدث خطأ، حاول مرة أخرى"); btn.disabled = false; }
-    }
+📍 شرّفنا الفرع واستلم هديتك — آخر موعد يوم 7 العيد ⏳
 
-    // ميزة المشاركة: ترسل الصورة + رابط المكان
-  async function handleShare() {
-    if (!generatedBlob) {
-        alert("⚠️ فضلاً، اضغط على زر (صمم وحمل البطاقة) أولاً.");
-        return;
-    }
+✨ صمّم بطاقتك الخاصة من هنا:
+${location.href}`;
 
-    const name = document.getElementById('nameInput').value || "صديقك";
-    const file = new File([generatedBlob], `Eid_Greeting.png`, { type: 'image/png' });
-    
-    // الروابط
-    const locationURL = "https://maps.app.goo.gl/your-location-link"; 
-    const siteURL = window.location.href;
+  if(blob&&navigator.canShare?.({files:[new File([blob],'eid.png',{type:'image/png'})]})){
+    try{
+      await navigator.share({
+        files:[new File([blob],'تهنئة_العيد.png',{type:'image/png'})],
+        text:txt
+      });
+    }catch(e){console.log(e)}
+  }else{
+    window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  }
+}
 
-    const shareText = `عيد مبارك وكل عام وأنتم بخير ✨\n\n` +
-                      `📍 موقع استلام العيدية:\n${locationURL}\n\n` +
-                      `🎁 اصنع تهنئتك الخاصة من هنا:\n${siteURL}`;
-
-    // 1. المحاولة الأولى: استخدام نظام المشاركة الأصلي للجوال (الأفضل لأنه يرسل الصورة والنص معاً)
-    if (navigator.share && navigator.canShare({ files: [file] })) {
-        try {
-            await navigator.share({
-                files: [file],
-                text: shareText
-            });
-            return; // إذا نجحت المشاركة نخرج من الدالة
-        } catch (err) { 
-            console.log("تم إلغاء المشاركة أو المتصفح لا يدعم الملفات"); 
-        }
-    }
-
-    // 2. المحاولة الثانية (الحل الذي تطلبه): الدخول المباشر للتطبيق لاختيار شخص
-    // نستخدم الرابط whatsapp:// لفتح التطبيق مباشرة على الجوال
-    const whatsappText = encodeURIComponent(shareText);
-    const directWaUrl = `whatsapp://send?text=${whatsappText}`;
-    
-    // محاولة فتح رابط التطبيق مباشرة
-    window.location.href = directWaUrl;
-
-    // 3. حل احتياطي (Fallback): إذا لم يفتح التطبيق خلال ثانية (مثلاً على الكمبيوتر)
-    setTimeout(() => {
-        if (document.hasFocus()) {
-            const fallbackUrl = `https://web.whatsapp.com/send?text=${whatsappText}`;
-            window.open(fallbackUrl, '_blank');
-        }
-    }, 1500);
+/* toast */
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.innerText=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 </script>
-
 </body>
 </html>
