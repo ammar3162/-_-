@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>من قلبي إليك — عيد مانديلين</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -18,8 +19,6 @@ body{
   min-height:100vh;display:flex;align-items:center;justify-content:center;
   padding:20px;color:var(--text);
 }
-
-/* MODAL */
 .modal{position:fixed;inset:0;background:rgba(50,70,90,.5);
   display:flex;align-items:center;justify-content:center;
   z-index:999;backdrop-filter:blur(10px)}
@@ -36,41 +35,37 @@ body{
 .modal-box p{color:var(--muted);font-size:13.5px;line-height:1.9;margin-bottom:14px}
 .chip{display:inline-block;padding:6px 16px;border-radius:50px;font-size:12.5px;font-weight:700;margin-bottom:18px}
 .chip-gold{background:#fff8ee;border:1px solid #e8c99a;color:var(--gold)}
-.chip-blue{background:#edf5fa;border:1px solid var(--blue-light);color:var(--blue-dark)}
-
-/* STEP BADGE inside modals */
 .how-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:18px;text-align:right}
-.how-row{display:flex;align-items:flex-start;gap:10px;background:#f7fbfd;
-  border-radius:12px;padding:10px 12px}
+.how-row{display:flex;align-items:flex-start;gap:10px;background:#f7fbfd;border-radius:12px;padding:10px 12px}
 .how-n{min-width:24px;height:24px;border-radius:50%;background:var(--blue);
   color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:900}
 .how-txt{font-size:13px;color:var(--text);line-height:1.6}
 .how-txt strong{color:var(--blue-dark)}
 
-/* DISCOUNT CARD */
+/* QR CARD في نافذة الخصم */
 .disc-card{
   background:linear-gradient(135deg,#eaf4f9,#f0f8f0);
   border:1.5px solid var(--blue-light);border-radius:16px;
-  padding:20px;margin-bottom:14px
+  padding:20px;margin-bottom:14px;
 }
-.disc-pct{font-size:52px;font-weight:900;color:var(--blue-dark);line-height:1}
-.disc-label{font-size:14px;color:var(--blue);font-weight:700;margin:4px 0 8px}
-.disc-code{
-  background:#fff;border:1.5px dashed var(--blue-light);border-radius:10px;
-  padding:10px 16px;font-size:22px;font-weight:900;letter-spacing:4px;
-  color:var(--blue-dark);font-family:monospace;margin-bottom:6px
+.disc-pct{font-size:42px;font-weight:900;color:var(--blue-dark);line-height:1}
+.disc-label{font-size:14px;color:var(--blue);font-weight:700;margin:4px 0 12px}
+.qr-wrap{
+  background:#fff;border-radius:14px;padding:14px;
+  display:inline-flex;flex-direction:column;align-items:center;
+  gap:8px;border:1.5px solid var(--blue-light);margin-bottom:8px
 }
+.qr-wrap canvas, .qr-wrap img{border-radius:6px}
+.qr-code-text{font-family:monospace;font-size:13px;letter-spacing:2px;
+  color:var(--blue-dark);font-weight:700}
 .disc-note{font-size:11.5px;color:var(--muted)}
 
-/* how-to-redeem */
 .redeem-steps{background:#fffbf3;border:1px solid #f0ddb0;border-radius:12px;
   padding:12px 14px;margin-bottom:14px;text-align:right}
 .redeem-steps p{font-size:12.5px;color:#8a6800;line-height:1.9}
-
 .deadline-box{background:#fef9f0;border:1px solid #f0ddb0;border-radius:10px;
   padding:9px 14px;font-size:13px;color:#a07820;margin-bottom:16px}
 
-/* BUTTONS */
 .btn{width:100%;padding:15px;border:none;border-radius:13px;font-size:15.5px;
   font-weight:700;font-family:'Cairo';cursor:pointer;transition:.25s;
   display:flex;align-items:center;justify-content:center;gap:8px}
@@ -80,38 +75,28 @@ body{
   box-shadow:0 5px 20px rgba(91,144,175,.3)}
 .btn-wa{background:linear-gradient(135deg,#1a9c3e,#25D366);color:#fff;
   box-shadow:0 5px 18px rgba(37,211,102,.3)}
-.btn-ghost{background:transparent;color:var(--blue);
-  border:1.5px solid var(--blue-light);margin-top:8px}
+.btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue-light);margin-top:8px}
 
-/* APP */
 .app{width:100%;max-width:470px}
-
 .brand{text-align:center;margin-bottom:16px}
 .brand-pill{display:inline-flex;align-items:center;gap:7px;background:#fff;
   padding:7px 18px;border-radius:50px;border:1px solid #dde8f0;
   box-shadow:0 2px 12px rgba(91,144,175,.1);margin-bottom:10px}
-.live-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);
-  animation:blink 2s infinite}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--blue);animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .brand-pill span{font-size:13px;font-weight:700;color:var(--blue-dark)}
 .brand h1{font-size:20px;font-weight:900;color:var(--blue-dark);line-height:1.4}
 .brand h1 em{font-style:normal;color:var(--blue)}
 .brand p{color:var(--muted);font-size:12.5px;margin-top:4px}
-
-.counter-bar{
-  display:flex;align-items:center;justify-content:center;gap:8px;
+.counter-bar{display:flex;align-items:center;justify-content:center;gap:8px;
   background:#fff;border:1px solid #dde8f0;border-radius:50px;
   padding:9px 20px;margin-bottom:12px;font-size:13px;
-  box-shadow:0 2px 12px rgba(91,144,175,.08)
-}
+  box-shadow:0 2px 12px rgba(91,144,175,.08)}
 .counter-bar .num{color:var(--blue-dark);font-weight:900;font-size:18px}
-
 .urgency{background:#fffbf0;border:1px solid #f0ddb0;border-radius:11px;
   padding:9px 14px;margin-bottom:12px;font-size:12.5px;color:#a07820;text-align:center}
 
-/* steps tracker */
-.tracker{display:flex;align-items:center;justify-content:center;
-  gap:4px;margin-bottom:14px}
+.tracker{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:14px}
 .tr-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
 .tr-n{width:28px;height:28px;border-radius:50%;font-size:12px;font-weight:900;
   display:flex;align-items:center;justify-content:center;transition:.3s}
@@ -121,50 +106,34 @@ body{
 .tr-step.active .tr-n{background:var(--blue);color:#fff;box-shadow:0 0 0 4px rgba(91,144,175,.2)}
 .tr-step.done .tr-n{background:#25D366;color:#fff}
 
-/* card */
 .card-section{background:#fff;border-radius:var(--radius);
   border:1px solid #dde8f0;padding:14px;margin-bottom:12px;
   box-shadow:0 4px 20px rgba(91,144,175,.08)}
 #capture-area{position:relative;border-radius:12px;overflow:hidden;line-height:0;
   box-shadow:0 8px 30px rgba(91,144,175,.15)}
 #template-img{width:100%;height:auto;display:block}
-
-/* fallback card */
-#fallback-card{
-  display:none;flex-direction:column;align-items:center;
+#fallback-card{display:none;flex-direction:column;align-items:center;
   justify-content:center;padding:36px 20px;min-height:360px;
-  background:linear-gradient(160deg,#f0f7fc,#faf5ef);text-align:center;
-  border-radius:12px;
-}
+  background:linear-gradient(160deg,#f0f7fc,#faf5ef);text-align:center;border-radius:12px}
 .fc-brand{font-size:12px;letter-spacing:3px;color:var(--blue-dark);font-weight:700;margin-bottom:6px}
 .fc-sub{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:10px}
 .fc-title{font-family:'Amiri';font-size:58px;color:var(--blue);line-height:1;margin-bottom:12px}
 .fc-body{font-size:12px;color:var(--muted);line-height:1.9;margin-bottom:18px}
 .fc-footer{font-size:12px;color:var(--blue-dark);font-weight:700;
   border-top:1px solid var(--blue-light);padding-top:12px;width:100%}
-
-#display-name{
-  position:absolute;bottom:12%;left:50%;transform:translateX(-50%);
+#display-name{position:absolute;bottom:12%;left:50%;transform:translateX(-50%);
   width:88%;font-family:'Amiri',serif;font-size:clamp(22px,5.5vw,38px);
   color:var(--blue);text-shadow:0 2px 8px rgba(91,144,175,.3);
-  text-align:center;pointer-events:none;line-height:1.4
-}
+  text-align:center;pointer-events:none;line-height:1.4}
 
-/* input */
 .input-wrap{margin-bottom:12px}
-.input-wrap input{
-  width:100%;padding:15px;background:#fff;
-  border:1.5px solid #dde8f0;border-radius:13px;
-  color:var(--text);font-size:17px;font-family:'Cairo';
-  outline:none;transition:.25s;text-align:center;
-  box-shadow:0 2px 8px rgba(91,144,175,.06)
-}
+.input-wrap input{width:100%;padding:15px;background:#fff;
+  border:1.5px solid #dde8f0;border-radius:13px;color:var(--text);
+  font-size:17px;font-family:'Cairo';outline:none;transition:.25s;text-align:center;
+  box-shadow:0 2px 8px rgba(91,144,175,.06)}
 .input-wrap input::placeholder{color:#bbb}
 .input-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(91,144,175,.15)}
-
 .footer{text-align:center;margin-top:16px;color:#bbb;font-size:11px}
-
-/* toast */
 .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(14px);
   background:var(--blue-dark);color:#fff;padding:11px 22px;border-radius:50px;
   font-size:13.5px;opacity:0;transition:.35s;z-index:9999;pointer-events:none;white-space:nowrap;
@@ -180,90 +149,67 @@ body{
     <div class="m-icon">🌸</div>
     <h2>من قلبي إليك<br>عيد مانديلين 🤍</h2>
     <p>أرسل تهنئة العيد باسمك لأحبابك — وإذا أرسلوها لشخص آخر <strong style="color:var(--blue-dark)">يحصلون على خصم خاص</strong> من مانديلين 🎁</p>
-
     <div class="how-steps">
       <div class="how-row"><span class="how-n">١</span><span class="how-txt">اكتب اسمك وحمّل البطاقة</span></div>
       <div class="how-row"><span class="how-n">٢</span><span class="how-txt">شاركها مع أهلك وأحبابك</span></div>
       <div class="how-row"><span class="how-n">٣</span><span class="how-txt"><strong>المستلم</strong> يرسلها لشخص آخر ← يحصل على خصمه 🎉</span></div>
     </div>
-
     <div class="chip chip-gold">⏳ العرض ينتهي يوم 7 العيد فقط</div><br>
     <button class="btn btn-blue" onclick="closeWelcome()">ابدأ وانشر الفرح ✨</button>
   </div>
 </div>
 
-<!-- DISCOUNT MODAL (للمستلم) -->
+<!-- DISCOUNT MODAL — QR بدل الكود -->
 <div class="modal hidden" id="discountModal">
   <div class="modal-box">
     <div class="m-icon">🎁</div>
-    <h2>شرّفتنا 🤍<br>خصمك جاهز!</h2>
+    <h2>شرّفتنا 🤍<br>هديتك جاهزة!</h2>
     <p style="color:var(--muted);font-size:13px;line-height:1.8;margin-bottom:14px">
-      شكراً لمشاركتك البطاقة مع أحبابك —<br>هذا خصمك الخاص من مانديلين بمناسبة العيد 🌙
+      أبرز هذا الـ QR للكاشير عند زيارتك<br>
     </p>
-
     <div class="disc-card">
       <div class="disc-pct">15%</div>
       <div class="disc-label">خصم على كل المشتريات</div>
-      <div class="disc-code" id="discCode">EID-????</div>
-      <div class="disc-note">أبرز هذا الكود عند الطلب أو الزيارة</div>
+      <div class="qr-wrap">
+        <div id="qrcode"></div>
+        <div class="qr-code-text" id="discCode">EID-????</div>
+      </div>
+      <div class="disc-note">ابرز  الكود للكاشير و استلم عيديتك</div>
     </div>
-
     <div class="redeem-steps">
       <p>
         📍 <strong>كيف تستخدم خصمك؟</strong><br>
-        زُر فرع مانديلين أو اطلب أونلاين وأدخل الكود عند الدفع.<br>
+        زُر فرع مانديلين وأبرز الـ QR للكاشير مباشرة.<br>
         📌 <a href="https://maps.app.goo.gl/7TgWZL7SrBLjarij8" target="_blank"
            style="color:var(--blue-dark);font-weight:700;text-decoration:none">موقع الفرع على الخريطة 🗺️</a>
       </p>
     </div>
-
-    <div class="deadline-box">⏳ آخر موعد لاستخدام الخصم: <strong>يوم 7 ذي الحجة</strong></div>
-
-    <button class="btn btn-wa" id="fwdBtn" onclick="forwardCard()">
-      📲 أرسلها لشخص آخر وانشر الفرح
-    </button>
+    <div class="deadline-box">⏳ آخر موعد: <strong>يوم 7 ذي الحجة</strong></div>
+    <button class="btn btn-wa" onclick="forwardCard()">📲 أرسلها لشخص آخر وانشر الفرح</button>
     <button class="btn btn-ghost" onclick="closeDiscount()">← العودة</button>
   </div>
 </div>
 
 <!-- APP -->
 <div class="app">
-
   <div class="brand">
-    <div class="brand-pill">
-      <div class="live-dot"></div>
-      <span>Mandolin — حملة العيد</span>
-    </div>
+    <div class="brand-pill"><div class="live-dot"></div><span>Mandolin — حملة العيد</span></div>
     <h1>من قلبي إليك<br><em>عيد مانديلين</em> 🌸</h1>
     <p>صمّم بطاقتك، شاركها — والمستلم يحصل على خصم خاص</p>
   </div>
-
   <div class="counter-bar">
     <span>🤍 وصلت التهاني إلى</span>
     <span class="num" id="joy-count">—</span>
     <span>شخص</span>
   </div>
-
   <div class="urgency">🌸 عرض حصري · آخر يوم <strong>7 ذي الحجة</strong> · الخصم للمستلم بعد إعادة الإرسال</div>
-
-  <!-- tracker -->
   <div class="tracker">
-    <div class="tr-step active" id="ts1">
-      <div class="tr-n">١</div>
-      <div class="tr-label">اكتب<br>اسمك</div>
-    </div>
+    <div class="tr-step active" id="ts1"><div class="tr-n">١</div><div class="tr-label">اكتب<br>اسمك</div></div>
     <div class="tr-line"></div>
-    <div class="tr-step idle" id="ts2">
-      <div class="tr-n">٢</div>
-      <div class="tr-label">حمّل<br>البطاقة</div>
-    </div>
+    <div class="tr-step idle" id="ts2"><div class="tr-n">٢</div><div class="tr-label">حمّل<br>البطاقة</div></div>
     <div class="tr-line"></div>
-    <div class="tr-step idle" id="ts3">
-      <div class="tr-n">٣</div>
-      <div class="tr-label">شارك<br>واحصد</div>
-    </div>
+    <div class="tr-step idle" id="ts3"><div class="tr-n">٣</div><div class="tr-label">شارك<br>واحصد</div></div>
   </div>
-
   <div class="card-section">
     <div id="capture-area">
       <img id="template-img" src="eid-card.jpg" crossorigin="anonymous"
@@ -272,107 +218,121 @@ body{
         <div class="fc-brand">MANDOLIN</div>
         <div class="fc-sub">نهنئكم بحلول<br>عيد الفطر المبارك</div>
         <div class="fc-title">عيد سعيد</div>
-        <div class="fc-body">
-          أعاده الله عليكم أعواماً مديدة وأنتم في تمام الرضا<br>
-          والطمأنينة، يحيطكم الخير من كل جهة وترافقكم البركة<br>في كل خطوة.
-        </div>
+        <div class="fc-body">أعاده الله عليكم أعواماً مديدة وأنتم في تمام الرضا<br>والطمأنينة، يحيطكم الخير من كل جهة وترافقكم البركة<br>في كل خطوة.</div>
         <div class="fc-footer">هذه التهنئة تحمل لك عيدية منّا — استلمها عند زيارتك</div>
       </div>
       <div id="display-name">الاسم هنا</div>
     </div>
   </div>
-
   <div class="input-wrap">
     <input type="text" id="nameInput" placeholder="✍️  اكتب اسمك هنا..." maxlength="30" oninput="onName(this)">
   </div>
-
-  <button class="btn btn-blue" id="downloadBtn" onclick="handleDownload()" style="margin-bottom:10px">
-    ⬇️ حمّل بطاقتك
-  </button>
-
-  <button class="btn btn-wa" id="shareBtn" style="display:none" onclick="handleShare()">
-    📲 أرسلها وانشر الفرح 🤍
-  </button>
-
+  <button class="btn btn-blue" id="downloadBtn" onclick="handleDownload()" style="margin-bottom:10px">⬇️ حمّل بطاقتك</button>
+  <button class="btn btn-wa" id="shareBtn" style="display:none" onclick="handleShare()">📲 أرسلها وانشر الفرح 🤍</button>
   <div class="footer">كل عام وأنتم بخير · Mandolin © 2026</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbx4IYUF-IlQEtBANNRfo_Lu0qai8ZWqTRn0e6IzczRSQeKTJ2Hi68JuQYpjQeKTsT/exec';
-const LOCATION='https://maps.app.goo.gl/7TgWZL7SrBLjarij8';
-let cardBlob=null;
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZGxxAy441hucd0j5DhYp1cDMBILC5lmqlPuVY-3aEjvr9RGI8jgSZvm-RBKdXVgF89A/exec';
+const LOCATION = 'https://maps.app.goo.gl/7TgWZL7SrBLjarij8';
+let cardBlob = null;
+let currentCode = null;
 
-/* counter */
-async function fetchCounter(){
-  try{
-    const r=await fetch(SCRIPT_URL+'?t='+Date.now());
-    const n=await r.text();
-    document.getElementById('joy-count').innerText=parseInt(n).toLocaleString('ar-SA');
-  }catch{document.getElementById('joy-count').innerText='١٬٢٩١';}
+/* COUNTER */
+async function fetchCounter() {
+  try {
+    const r = await fetch(SCRIPT_URL + '?t=' + Date.now());
+    const n = await r.text();
+    document.getElementById('joy-count').innerText = parseInt(n).toLocaleString('ar-SA');
+  } catch { document.getElementById('joy-count').innerText = '١٬٢٩١'; }
 }
 fetchCounter();
 
-/* name */
-function onName(el){
-  document.getElementById('display-name').innerText=el.value||'الاسم هنا';
-  if(el.value) setStep(1);
+function onName(el) {
+  document.getElementById('display-name').innerText = el.value || 'الاسم هنا';
+  if (el.value) setStep(1);
 }
 
-/* tracker */
-function setStep(n){
-  [1,2,3].forEach(i=>{
-    const el=document.getElementById('ts'+i);
-    el.className='tr-step '+(i<n?'done':i===n?'active':'idle');
+function setStep(n) {
+  [1,2,3].forEach(i => {
+    document.getElementById('ts'+i).className = 'tr-step ' + (i<n?'done':i===n?'active':'idle');
   });
 }
 
-/* modals */
-function closeWelcome(){document.getElementById('welcomeModal').classList.add('hidden')}
-function closeDiscount(){document.getElementById('discountModal').classList.add('hidden')}
+function closeWelcome() { document.getElementById('welcomeModal').classList.add('hidden'); }
+function closeDiscount() { document.getElementById('discountModal').classList.add('hidden'); }
 
-function showDiscount(){
-  const code='EID-'+Math.random().toString(36).slice(2,5).toUpperCase()+Math.floor(10+Math.random()*90);
-  document.getElementById('discCode').innerText=code;
+/* SHOW DISCOUNT مع QR */
+function showDiscount() {
+  const name = document.getElementById('nameInput').value || 'غير محدد';
+  const code = 'EID-' + Math.random().toString(36).slice(2,5).toUpperCase() + Math.floor(10+Math.random()*90);
+  currentCode = code;
+
+  document.getElementById('discCode').innerText = code;
+
+  // توليد QR Code
+  const qrDiv = document.getElementById('qrcode');
+  qrDiv.innerHTML = '';
+  new QRCode(qrDiv, {
+    text: code,
+    width: 160,
+    height: 160,
+    colorDark: '#3d6e8a',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
   document.getElementById('discountModal').classList.remove('hidden');
+  registerCode(name, code);
 }
 
-/* download */
-async function handleDownload(){
-  const name=document.getElementById('nameInput').value.trim();
-  if(!name){showToast('✍️ اكتب اسمك أولاً يا غالي');return;}
-  const btn=document.getElementById('downloadBtn');
-  btn.disabled=true;btn.innerHTML='⏳ جاري التصميم...';
-  try{
-    const canvas=await html2canvas(document.getElementById('capture-area'),
-      {scale:3,useCORS:true,logging:false,backgroundColor:'#f9f7f4'});
-    canvas.toBlob(b=>{
-      cardBlob=b;
-      const url=URL.createObjectURL(b);
-      Object.assign(document.createElement('a'),{download:`تهنئة_عيد_${name}.png`,href:url}).click();
-      document.getElementById('shareBtn').style.display='flex';
-      btn.innerHTML='✅ تم — حمّل مرة أخرى';
-      btn.disabled=false;
+/* REGISTER */
+async function registerCode(name, code) {
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'register', name, code })
+    });
+  } catch(e) { console.warn('تعذّر تسجيل الكود:', e); }
+}
+
+/* DOWNLOAD */
+async function handleDownload() {
+  const name = document.getElementById('nameInput').value.trim();
+  if (!name) { showToast('✍️ اكتب اسمك أولاً يا غالي'); return; }
+  const btn = document.getElementById('downloadBtn');
+  btn.disabled = true; btn.innerHTML = '⏳ جاري التصميم...';
+  try {
+    const canvas = await html2canvas(document.getElementById('capture-area'),
+      { scale:3, useCORS:true, logging:false, backgroundColor:'#f9f7f4' });
+    canvas.toBlob(b => {
+      cardBlob = b;
+      const url = URL.createObjectURL(b);
+      Object.assign(document.createElement('a'), { download:`تهنئة_عيد_${name}.png`, href:url }).click();
+      document.getElementById('shareBtn').style.display = 'flex';
+      btn.innerHTML = '✅ تم — حمّل مرة أخرى';
+      btn.disabled = false;
       setStep(2);
       showToast('🎉 تم! الآن أرسلها لأحبابك 🤍');
-      fetch(SCRIPT_URL,{method:'POST',mode:'no-cors'}).catch(()=>{});
-      const el=document.getElementById('joy-count');
-      const cur=parseInt((el.innerText||'').replace(/\D/g,''))||1291;
-      el.innerText=(cur+1).toLocaleString('ar-SA');
+      fetch(SCRIPT_URL, { method:'POST', mode:'no-cors' }).catch(()=>{});
+      const el = document.getElementById('joy-count');
+      const cur = parseInt((el.innerText||'').replace(/\D/g,''))||1291;
+      el.innerText = (cur+1).toLocaleString('ar-SA');
     });
-  }catch{
+  } catch {
     showToast('❌ حدث خطأ، حاول مرة أخرى');
-    btn.innerHTML='⬇️ حمّل بطاقتك';btn.disabled=false;
+    btn.innerHTML = '⬇️ حمّل بطاقتك'; btn.disabled = false;
   }
 }
 
-/* share → then show discount */
-async function handleShare(){
-  if(!cardBlob){showToast('حمّل البطاقة أولاً');return;}
-  const name=document.getElementById('nameInput').value||'صديقي';
-
-  const txt=
+/* SHARE */
+async function handleShare() {
+  if (!cardBlob) { showToast('حمّل البطاقة أولاً'); return; }
+  const name = document.getElementById('nameInput').value || 'صديقي';
+  const txt =
 `🌸 ${name} يهنئك بمناسبة العيد الكبير 🤍
 
 أعاده الله عليكم أعواماً مديدة وأنتم في تمام الرضا والطمأنينة 🌙
@@ -381,7 +341,7 @@ async function handleShare(){
 🎁 *هذه البطاقة تحمل لك هدية من Mandolin!*
 لتحصل على خصمك الخاص:
 👉 أرسل هذه البطاقة لشخص آخر تحبه
-وسيظهر لك كود الخصم فوراً ✨
+وسيظهر لك QR الخصم فوراً ✨
 ━━━━━━━━━━━━━━━
 📍 فرع مانديلين: ${LOCATION}
 ⏳ العرض ينتهي يوم 7 العيد
@@ -389,47 +349,45 @@ async function handleShare(){
 ✍️ صمّم بطاقتك الخاصة:
 ${location.href}`;
 
-  const file=new File([cardBlob],'تهنئة_العيد.png',{type:'image/png'});
-  try{
-    if(navigator.share&&navigator.canShare?.({files:[file]})){
-      await navigator.share({files:[file],text:txt});
-    }else{
-      window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  const file = new File([cardBlob], 'تهنئة_العيد.png', { type:'image/png' });
+  try {
+    if (navigator.share && navigator.canShare?.({files:[file]})) {
+      await navigator.share({ files:[file], text:txt });
+    } else {
+      window.open('https://wa.me/?text='+encodeURIComponent(txt), '_blank');
     }
-  }catch(e){
-    if(e.name==='AbortError') return;
-    window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  } catch(e) {
+    if (e.name==='AbortError') return;
+    window.open('https://wa.me/?text='+encodeURIComponent(txt), '_blank');
   }
   setStep(3);
-  setTimeout(showDiscount,700);
+  setTimeout(showDiscount, 700);
 }
 
-/* forward (from inside discount modal) */
-function forwardCard(){
-  const code=document.getElementById('discCode').innerText;
-  const txt=
+/* FORWARD */
+function forwardCard() {
+  const txt =
 `🌸 من قلبي إليك — عيد مانديلين 🤍
 
-أرسلت لك بطاقة تهنئة بمناسبة عيد الفطر المبارك 🌙
+أرسلت لك بطاقة تهنئة بمناسبة العيد الكبير 🌙
 
 ━━━━━━━━━━━━━━━
 🎁 *هديتك من Mandolin جاهزة!*
 أرسل هذه البطاقة لشخص تحبه
-← وسيظهر لك كود خصمك فوراً ✨
+← وسيظهر لك QR خصمك فوراً ✨
 ━━━━━━━━━━━━━━━
 📍 فرع مانديلين: ${LOCATION}
 ⏳ العرض ينتهي يوم 7 العيد
 
 ✍️ صمّم بطاقتك الخاصة:
 ${location.href}`;
-  window.open('https://wa.me/?text='+encodeURIComponent(txt),'_blank');
+  window.open('https://wa.me/?text='+encodeURIComponent(txt), '_blank');
 }
 
-/* toast */
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.innerText=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3200);
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3200);
 }
 </script>
 </body>
